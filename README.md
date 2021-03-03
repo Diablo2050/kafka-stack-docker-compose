@@ -1,4 +1,4 @@
-![Build Status]((https://github.com/Diablo2050/kafka-stack-docker-compose/actions/workflows/main.yml/badge.svg))
+![Build Status]((https://github.com/Diablo2050/kafka-stack-docker-compose/actions/workflows/main.yml/badge.svg?branch=dev))
 
 # An open-source project by   [![Conduktor.io](https://www.conduktor.io/uploads/conduktor.svg)](https://conduktor.io/)
 
