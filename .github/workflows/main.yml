@@ -1,0 +1,43 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+env:
+  DOCKER_HOST_IP: 127.0.0.1
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      - name: install kafka binaries
+        uses: myci-actions/add-deb-repo@4
+        with:
+          repo: deb [arch=amd64] https://packages.confluent.io/deb/4.1 stable main
+          repo-name: confluent
+          key-server: https://packages.confluent.io/deb/4.1/archive.key
+
+      # Runs a set of commands using the runners shell
+      - uses: docker-practice/actions-setup-docker@master
+      - run: |
+           ./test.sh zk-single-kafka-single.yml 2
+           ./test.sh zk-multiple-kafka-single.yml 4
+           ./test.sh zk-single-kafka-multiple.yml 4
+           ./test.sh zk-multiple-kafka-multiple.yml 6
+           ./test.sh zk-multiple-kafka-multiple-schema-registry.yml 7
+           ./test.sh full-stack.yml 10
