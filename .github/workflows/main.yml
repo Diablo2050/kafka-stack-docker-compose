@@ -26,21 +26,18 @@ jobs:
       - uses: actions/checkout@v2
       - name: add kafka repo key
         run: wget -qO - https://packages.confluent.io/deb/4.0/archive.key | sudo apt-key add -
+        
       - name: add kafka binary repo
         run: sudo add-apt-repository "deb [arch=amd64] https://packages.confluent.io/deb/4.0 stable main"
-      - name: install binary
-        run: sudo apt-get update && sudo apt-get install confluent-platform-oss-2.11
+        
+      - name: install kafka binary
+        run: sudo apt-get install confluent-platform-oss-2.11
       
-#       - name: install kafka binaries
-#         uses: myci-actions/add-deb-repo@4
-#         with:
-#           repo: deb [arch=amd64] https://packages.confluent.io/deb/4.1 stable main
-#           repo-name: confluent
-#           key-server: https://packages.confluent.io/deb/4.1/archive.key
 
       # Runs a set of commands using the runners shell
       - uses: docker-practice/actions-setup-docker@master
-      - run: |
+      - name: run tests
+        run: |
            ./test.sh zk-single-kafka-single.yml 2
            ./test.sh zk-multiple-kafka-single.yml 4
            ./test.sh zk-single-kafka-multiple.yml 4
